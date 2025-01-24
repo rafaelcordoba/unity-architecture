@@ -9,9 +9,9 @@ jobs:
       checks: write
       contents: write
     name: Test my project
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     container:
-      image: unityci/editor:6000.0.35f1-windows-mono-3
+      image: unityci/editor:6000.0.35f1-mac-mono-3
     env:
         UNITY_PROJECT_DIR: "UnityProject"
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
