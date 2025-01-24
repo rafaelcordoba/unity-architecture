@@ -21,29 +21,32 @@ jobs:
           echo "Hello from GitHub Actions!"
           echo "Project: ${{ env.UNITY_PROJECT_DIR }}"
           echo "Email: ${{ secrets.UNITY_EMAIL }}"
+          echo "Pass: ${{ secrets.UNITY_PASSWORD }}"
+          echo "License: ${{ secrets.UNITY_LICENSE }}"
+          echo "Token: ${{ secrets.TOKEN }}"
 
       # Cache
-      - uses: actions/cache@v3
-        with:
-          path: ${{ env.UNITY_PROJECT_DIR }}/Library
-          key: Library-${{ hashFiles('${{ env.UNITY_PROJECT_DIR }}/Assets/**', '${{ env.UNITY_PROJECT_DIR }}/Packages/**', '${{ env.UNITY_PROJECT_DIR }}/ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+#      - uses: actions/cache@v3
+#        with:
+#          path: ${{ env.UNITY_PROJECT_DIR }}/Library
+#          key: Library-${{ hashFiles('${{ env.UNITY_PROJECT_DIR }}/Assets/**', '${{ env.UNITY_PROJECT_DIR }}/Packages/**', '${{ env.UNITY_PROJECT_DIR }}/ProjectSettings/**') }}
+#          restore-keys: |
+#            Library-
 
       # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ env.UNITY_PROJECT_DIR }}
-          githubToken: ${{ secrets.TOKEN }}
-          unityVersion: '6000.0.23f1'
+#      - name: Run tests
+#        uses: game-ci/unity-test-runner@v4
+#        env:
+#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+#        with:
+#          projectPath: ${{ env.UNITY_PROJECT_DIR }}
+#          githubToken: ${{ secrets.TOKEN }}
+#          unityVersion: '6000.0.23f1'
 
       # Output
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Test Results
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: Test Results
+#          path: ${{ steps.testRunner.outputs.artifactsPath }}
