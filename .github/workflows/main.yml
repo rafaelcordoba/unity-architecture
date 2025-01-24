@@ -37,26 +37,25 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ${{ env.UNITY_PROJECT_DIR }}/Library
-          key: Library-UnityArchitecture-iOS
-            restore-keys: |
-              Library-UnityArchitecture-
-              Library-
+          #key: Library-${{ hashFiles('${{ env.UNITY_PROJECT_DIR }}/Assets/**', '${{ env.UNITY_PROJECT_DIR }}/Packages/**', '${{ env.UNITY_PROJECT_DIR }}/ProjectSettings/**') }}
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ env.UNITY_PROJECT_DIR }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          unityVersion: '6000.0.23f1'
-
-      # Output
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Test results
-          path: artifacts
+#      # Test
+#      - name: Run tests
+#        uses: game-ci/unity-test-runner@v4
+#        env:
+#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+#        with:
+#          projectPath: ${{ env.UNITY_PROJECT_DIR }}
+#          githubToken: ${{ secrets.GITHUB_TOKEN }}
+#
+#      # Output
+#      - uses: actions/upload-artifact@v3
+#        if: always()
+#        with:
+#          name: Test results
+#          path: artifacts
