@@ -37,9 +37,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ${{ env.UNITY_PROJECT_DIR }}/Library
-          key: Library-${{ hashFiles('${{ env.UNITY_PROJECT_DIR }}/Assets/**', '${{ env.UNITY_PROJECT_DIR }}/Packages/**', '${{ env.UNITY_PROJECT_DIR }}/ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+          key: Library-UnityArchitecture-iOS
+            restore-keys: |
+              Library-UnityArchitecture-
+              Library-
 
       # Test
       - name: Run tests
@@ -55,6 +56,7 @@ jobs:
 
       # Output
       - uses: actions/upload-artifact@v3
+        if: always()
         with:
-          name: Test Results
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+          name: Test results
+          path: artifacts
