@@ -18,9 +18,9 @@ jobs:
       # Logs
       - name: Print regular logs
         run: |
-        echo "Hello from GitHub Actions!"
-        echo "Project: ${{ env.UNITY_PROJECT_DIR }}"
-        echo "Email: ${{ secrets.UNITY_EMAIL }}"
+          echo "Hello from GitHub Actions!"
+          echo "Project: ${{ env.UNITY_PROJECT_DIR }}"
+          echo "Email: ${{ secrets.UNITY_EMAIL }}"
 
       # Cache
       - uses: actions/cache@v3
