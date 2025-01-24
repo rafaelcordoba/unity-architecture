@@ -9,7 +9,6 @@ namespace MyGame.Domain.Hello
         {
             if (string.IsNullOrWhiteSpace(text) || text.Length > 10)
             {
-                IsValid = false;
                 return;
             }
             

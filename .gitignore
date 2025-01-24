@@ -1,3 +1,7 @@
 
 .DS_Store
 UnityProject/.idea
+MyGameTests/.idea
+MyGameTests/bin
+MyGameTests/obj
+MyGameTests/MyGameTests.sln.DotSettings.user
