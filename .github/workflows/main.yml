@@ -10,6 +10,8 @@ jobs:
       contents: write
     name: Test my project
     runs-on: ubuntu-latest
+    container:
+      image: unityci/editor:ubuntu-6000.0.23f1-linux-il2cpp-0
     env:
         UNITY_PROJECT_DIR: "UnityProject"
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -32,13 +34,22 @@ jobs:
           echo "Pass: ${{ secrets.UNITY_PASSWORD }}"
           echo "License: ${{ secrets.UNITY_LICENSE }}"
           echo "Token: ${{ secrets.TOKEN }}"
+          
+      - name: Run SyncSolution
+        run: |
+          /opt/unity/Editor/Unity \
+            -batchmode \
+            -nographics \
+            -logFile - \
+            -projectPath /github/workspace/UnityProject \
+            -executeMethod UnityEditor.SyncVS.SyncSolution \
+            -quit
 
       # Cache
       - uses: actions/cache@v3
         with:
           path: ${{ env.UNITY_PROJECT_DIR }}/Library
-          #key: Library-${{ hashFiles('${{ env.UNITY_PROJECT_DIR }}/Assets/**', '${{ env.UNITY_PROJECT_DIR }}/Packages/**', '${{ env.UNITY_PROJECT_DIR }}/ProjectSettings/**') }}
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-${{ hashFiles('UnityProject/Assets/**', 'UnityProject/Packages/**', 'UnityProject/ProjectSettings/**') }}
           restore-keys: |
             Library-
 
