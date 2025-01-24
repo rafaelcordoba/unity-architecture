@@ -46,7 +46,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           projectPath: ${{ env.UNITY_PROJECT_DIR }}
-          githubToken: ${{ secrets.TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           unityVersion: '6000.0.23f1'
 
       # Output
