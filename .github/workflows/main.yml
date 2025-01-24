@@ -4,6 +4,10 @@ on: [push, pull_request]
 
 jobs:
   build:
+    # Ensure your job has at least 'checks: write' permission
+    permissions:
+      checks: write
+      contents: write
     name: Test my project
     runs-on: ubuntu-latest
     env:
