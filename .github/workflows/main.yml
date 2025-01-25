@@ -31,8 +31,8 @@ jobs:
 
       - uses: akiojin/unity-command-github-action@v1
         with:
-        build-target: iOS
-        project-directory: UnityProject
+          build-target: iOS
+          project-directory: UnityProject
 
       - name: List files for debugging
         run: |
