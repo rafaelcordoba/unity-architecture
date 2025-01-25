@@ -1,27 +1,44 @@
 name: Unit Tests
-
 on: [push, pull_request_target]
-
 jobs:
   build:
     name: Test my project
     runs-on: ubuntu-latest
-    env:
-      UNITY_PROJECT_DIR: "UnityProject" 
-    permissions:
-      contents: read
-      statuses: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore MyGameTests
+
+      - name: Run tests
+        run: dotnet test MyGameTests --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-test-results
+          path: MyGameTests/TestResults/test-results.trx
 
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ env.UNITY_PROJECT_DIR }}
+          projectPath: 'UnityProject'
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          resultFiles: artifacts/*.xml
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: unity-test-results
+          path: artifacts/*.xml
