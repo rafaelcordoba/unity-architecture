@@ -10,14 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Unity
-        uses: game-ci/unity-actions@v2
-        with:
-          version: 6000.0.23f1
-
-      - name: Generate solution files
-        run: unity -batchmode -quit -executeMethod GitTools.Solution.Sync
-
       - name: Cache Unity Library
         uses: actions/cache@v3
         with:
@@ -26,16 +18,16 @@ jobs:
           restore-keys: |
             Library-${{ runner.os }}-
 
-      # - name: Generate .cjproj files
-      #   uses: game-ci/unity-builder@v2
-      #   env: 
-      #     UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
-      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}          
-      #   with:
-      #     projectPath: 'UnityProject' 
-      #     buildMethod: UnityEditor.SyncVS.SyncSolution
-      #     targetPlatform: StandaloneWindows
+      - name: Generate .cjproj files
+        uses: game-ci/unity-builder@v2
+        env: 
+          UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}          
+        with:
+          projectPath: 'UnityProject' 
+          buildMethod: GitTools.Solution.Sync
+          targetPlatform: Android
 
       # - name: Run Unity tests
       #   uses: game-ci/unity-test-runner@v4
