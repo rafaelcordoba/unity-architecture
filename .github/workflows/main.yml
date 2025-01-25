@@ -6,54 +6,13 @@ jobs:
   build:
     name: Test my project
     runs-on: ubuntu-latest
-    container:
-      image: unityci/editor:6000.0.35f1-mac-mono-3
     env:
         UNITY_PROJECT_DIR: "UnityProject"
-#        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-#        UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
-#        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
     steps:
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
-#        with:
-#          lfs: true
-          
-#      # Logs
-#      - name: Print regular logs
-#        run: |
-#          echo "Hello from GitHub Actions!"
-#          echo "Project: ${{ env.UNITY_PROJECT_DIR }}"
-#          echo "Email: ${{ secrets.UNITY_EMAIL }}"
-#          echo "Pass: ${{ secrets.UNITY_PASSWORD }}"
-#          echo "License: ${{ secrets.UNITY_LICENSE }}"
-#          echo "Token: ${{ secrets.TOKEN }}"
-#          
-#      - name: Run SyncSolution
-#        run: |
-#          /opt/unity/Editor/Unity \
-#            -batchmode \
-#            -nographics \
-#            -logFile - \
-#            -projectPath /github/workspace/UnityProject \
-#            -executeMethod UnityEditor.SyncVS.SyncSolution \
-#            -quit
-#        env:
-#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-#
-#      # Cache
-#      - uses: actions/cache@v3
-#        with:
-#          path: ${{ env.UNITY_PROJECT_DIR }}/Library
-#          key: Library-${{ hashFiles('UnityProject/Assets/**', 'UnityProject/Packages/**', 'UnityProject/ProjectSettings/**') }}
-#          restore-keys: |
-#            Library-
-#
-      # Test
+
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -63,10 +22,3 @@ jobs:
         with:
           projectPath: ${{ env.UNITY_PROJECT_DIR }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-#
-#      # Output
-#      - uses: actions/upload-artifact@v3
-#        if: always()
-#        with:
-#          name: Test results
-#          path: artifacts
