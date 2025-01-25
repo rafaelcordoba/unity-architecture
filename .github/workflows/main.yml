@@ -29,22 +29,14 @@ jobs:
           projectPath: 'UnityProject' 
           buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
           targetPlatform: StandaloneWindows64
-      
-      - name: List files for debugging
-        run: |
-          echo "Current directory: $(pwd)"
-          ls -R
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-      
-      - name: Restore dependencies
-        run: dotnet restore MyGameTests
 
       - name: Run Dotnet tests
-        run: dotnet test MyGameTests --no-build --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test MyGameTests
 
       - name: Upload Dotnet test results
         uses: actions/upload-artifact@v3
