@@ -13,10 +13,9 @@ jobs:
       - name: Cache Unity Library
         uses: actions/cache@v3
         with:
-          path: UnityProject/Library
-          key: Library-${{ runner.os }}-${{ hashFiles('UnityProject/Assets/**', 'UnityProject/ProjectSettings/**') }}
-          restore-keys: |
-            Library-${{ runner.os }}-
+          path: Library
+          key: Library
+          restore-keys: Library
 
       - name: Generate .cjproj files
         uses: game-ci/unity-builder@v4
@@ -30,12 +29,13 @@ jobs:
           buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
           targetPlatform: StandaloneWindows64
 
+      - name: Log csproj File Contents
+        run: cat UnityProject/mygame.common.csproj
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-
-      - name: Run Dotnet tests
         run: dotnet test MyGameTests
 
       - name: Upload Dotnet test results
