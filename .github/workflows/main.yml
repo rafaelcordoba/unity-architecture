@@ -19,6 +19,7 @@ jobs:
           restore-keys: Library
 
       - name: Generate Solution
+        continue-on-error: true
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -34,8 +35,8 @@ jobs:
             -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution \
             -quit
       
-      - name: Return License
-        if: always()
+      - name: Return Unity License
+        continue-on-error: true
         run: unity-editor -quit -returnlicense
 
       # - name: Generate .cjproj files
