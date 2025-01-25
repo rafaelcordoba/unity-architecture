@@ -28,7 +28,7 @@ jobs:
         with:
           projectPath: 'UnityProject' 
           buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
-          targetPlatform: Android
+          targetPlatform: StandaloneWindows64
       
       - name: List files for debugging
         run: |
