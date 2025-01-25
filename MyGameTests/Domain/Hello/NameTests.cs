@@ -46,10 +46,4 @@ public class NameTests
 
         name.IsValid.Should().BeTrue();
     }
-
-    [Fact]
-    public void Failing_Test()
-    {
-        Assert.True(false);
-    }
 }

@@ -15,8 +15,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: UnityProject/Library
-          key: Library
-          restore-keys: Library
+          key: Library-test-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-test-
 
       - name: Generate Solution
         continue-on-error: true
@@ -38,24 +38,6 @@ jobs:
       - name: Return Unity License
         continue-on-error: true
         run: unity-editor -quit -returnlicense
-
-      # - name: Generate .cjproj files
-      #   uses: game-ci/unity-builder@v4
-      #   env: 
-      #     UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}          
-      #   with:
-      #     projectPath: 'UnityProject' 
-      #     buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
-      #     targetPlatform: StandaloneWindows64
-
-      - name: Log csproj File Contents
-        run: |
-          cat UnityProject/mygame.common.csproj
-          echo "Current directory: $(pwd)"
-          echo "Files and directories one level down in UnityProject:"
-          ls UnityProject/*
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
