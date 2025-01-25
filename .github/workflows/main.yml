@@ -24,7 +24,8 @@ jobs:
           UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}          
-        with: 
+        with:
+          projectPath: 'UnityProject' 
           buildMethod: UnityEditor.SyncVS.SyncSolution
 
       # - name: Run Unity tests
