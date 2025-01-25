@@ -29,6 +29,11 @@ jobs:
           buildMethod: UnityEditor.SyncVS.SyncSolution
           targetPlatform: Android
 
+      - name: List files for debugging
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -R
+
       # - name: Run Unity tests
       #   uses: game-ci/unity-test-runner@v4
       #   env:
