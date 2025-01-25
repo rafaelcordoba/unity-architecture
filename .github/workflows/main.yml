@@ -23,7 +23,6 @@ jobs:
           UNITY_SERIAL: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}          
-        continue-on-error: true
         with:
           projectPath: 'UnityProject' 
           buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
@@ -32,7 +31,8 @@ jobs:
       - name: Log csproj File Contents
         run: |
           cat UnityProject/mygame.common.csproj
-          ls -R UnityProject/Temp
+          echo "Current directory: $(pwd)"
+          ls -R
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -41,9 +41,3 @@ jobs:
       
       - name: Run Tests
         run: dotnet test MyGameTests
-
-      - name: Upload Dotnet test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: dotnet-test-results
-          path: MyGameTests/TestResults/test-results.trx
