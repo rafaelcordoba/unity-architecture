@@ -18,8 +18,7 @@ jobs:
           key: Library-test-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: Library-test-
 
-      - name: Generate Solution
-        continue-on-error: true
+      - name: Activate Unity License
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -30,6 +29,8 @@ jobs:
             -password "$UNITY_PASSWORD" \
             -serial "$UNITY_SERIAL"
 
+      - name: Generate Solution
+        run: |
           unity-editor -nographics \
             -projectPath ./UnityProject \
             -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution \
