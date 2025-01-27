@@ -16,10 +16,7 @@ namespace MyGame.Infrastructure.Hello
 
         public async Task<string> GetGreetingAsync(Name name)
         {
-            var dto = new NameDto
-            {
-                Text = name.Text
-            };
+            var dto = name.ToDto();
             
             var json = JsonConvert.SerializeObject(dto);
             _logger.Info($"sending request: {json}");

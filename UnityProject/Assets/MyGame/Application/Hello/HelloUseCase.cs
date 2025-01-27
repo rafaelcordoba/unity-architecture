@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MyGame.Common.Logging;
 using MyGame.Domain.Hello;
@@ -24,9 +25,17 @@ namespace MyGame.Application.Hello
                 return $"Error: Invalid name: {name}";
             }
 
-            var greetingText = await _service.GetGreetingAsync(nameModel);
-            _logger.Info($"Hello, {nameModel.Text}!");
-            return greetingText;
+            try
+            {
+                var greetingText = await _service.GetGreetingAsync(nameModel);
+                _logger.Info($"Hello, {nameModel.Text}!");
+                return greetingText;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error getting greeting: {ex.Message}");
+                return "Error: Failed to get greeting";
+            }
         }
     }
 }
