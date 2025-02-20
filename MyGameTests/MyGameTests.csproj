@@ -23,7 +23,6 @@
     <ItemGroup>
       <ProjectReference Include="..\UnityProject\mygame.application.csproj" />
       <ProjectReference Include="..\UnityProject\mygame.common.csproj" />
-      <ProjectReference Include="..\UnityProject\mygame.domain.csproj" />
       <ProjectReference Include="..\UnityProject\mygame.infrastructure.csproj" />
     </ItemGroup>
 

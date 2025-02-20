@@ -1,15 +1,18 @@
 using System;
 using System.Threading.Tasks;
+using MyGame.Common.Logging;
 
 namespace MyGame.Application.Hello
 {
     public class HelloUseCase
     {
         private readonly IGreetingService _service;
+        private readonly ILogger _logger;
 
-        public HelloUseCase(IGreetingService service)
+        public HelloUseCase(IGreetingService service, ILogger logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         public async Task<string> HelloAsync(string name)
@@ -28,8 +31,10 @@ namespace MyGame.Application.Hello
                     {
                         return await _service.GetGreetingAsync(name);
                     }
-                    catch (Exception _)
+                    catch (Exception exception)
                     {
+                        
+                        _logger.Error($"{exception.Message} {exception.StackTrace}");
                         return "Error: Failed to get greeting";
                     }
             }

@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGameTests", "MyGameTests.csproj", "{9E320EA3-86AF-40BD-9194-EDCE0C8C1CBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mygame.domain", "..\UnityProject\mygame.domain.csproj", "{DEC237F9-9C01-BF9A-E0D0-E1137F388050}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mygame.application", "..\UnityProject\mygame.application.csproj", "{810F8A3D-006F-2A4C-5FF2-8628D19751BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mygame.common", "..\UnityProject\mygame.common.csproj", "{0A330B31-E145-36F6-2C28-7942BEF9B271}"
@@ -20,10 +18,6 @@ Global
 		{9E320EA3-86AF-40BD-9194-EDCE0C8C1CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E320EA3-86AF-40BD-9194-EDCE0C8C1CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E320EA3-86AF-40BD-9194-EDCE0C8C1CBC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DEC237F9-9C01-BF9A-E0D0-E1137F388050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEC237F9-9C01-BF9A-E0D0-E1137F388050}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEC237F9-9C01-BF9A-E0D0-E1137F388050}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEC237F9-9C01-BF9A-E0D0-E1137F388050}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{810F8A3D-006F-2A4C-5FF2-8628D19751BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{810F8A3D-006F-2A4C-5FF2-8628D19751BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810F8A3D-006F-2A4C-5FF2-8628D19751BB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
