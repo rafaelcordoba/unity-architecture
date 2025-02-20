@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ServerConfig
   m_EditorClassIdentifier: 
   helloBaseUrl: https://jsonplaceholder.typicode.com
+  helloRandomSeed: 12345
