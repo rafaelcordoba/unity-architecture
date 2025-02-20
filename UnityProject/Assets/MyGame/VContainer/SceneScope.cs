@@ -7,6 +7,7 @@ namespace MyGame.VContainer
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            // Hello World Presenter is in base.autoInjectGameObjects (check sample scene) 
         }
     }
 }

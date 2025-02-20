@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace MyGame.Logging
+namespace MyGame.Common.Logging
 {
-    public class UnityLogger : MyGame.Common.Logging.ILogger
+    public class UnityLogger : ILogger
     {
         public void Info(string message)
         {
