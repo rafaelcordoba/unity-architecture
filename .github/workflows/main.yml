@@ -18,27 +18,28 @@ jobs:
           key: Library-test-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: Library-test-
 
+      - name: Create ULF license file
+        env:
+          ULF_CONTENT: ${{ secrets.UNITY_LICENSE }}
+        run: echo "$ULF_CONTENT" > /tmp/license.ulf
+
       - name: Activate Unity License
         env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          ULF_CONTENT: ${{ secrets.UNITY_LICENSE }}
         run: |
-          unity-editor -nographics -quit \
-            -username "$UNITY_EMAIL" \
-            -password "$UNITY_PASSWORD"
-            -license "$UNITY_LICENSE"
+          unity-editor -nographics -batchmode -manualLicenseFile /tmp/license.ulf -logfile
 
       - name: Generate Solution
         run: |
-          unity-editor -nographics \
-            -projectPath ./UnityProject \
-            -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution \
-            -quit
+          unity-editor -nographics -projectPath ./UnityProject -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution -quit
       
       - name: Return Unity License
+        env:
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         continue-on-error: true
-        run: unity-editor -quit -returnlicense
+        run: unity-editor -quit -batchmode -returnlicense -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
