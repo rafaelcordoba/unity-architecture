@@ -25,3 +25,15 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}  
           projectPath: ./UnityProject
+
+      - name: Generate Solution
+        run: |
+          unity-editor -nographics -projectPath ./UnityProject -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution -quit
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Run Tests
+        run: dotnet test MyGameTests
