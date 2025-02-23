@@ -6,6 +6,11 @@ jobs:
     name: Test my project
     runs-on: ubuntu-latest
     container: unityci/editor:6000.0.23f1-linux-il2cpp-3.1.0
+    
+    env:
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
 
     steps:
       - name: Checkout repository
@@ -23,10 +28,6 @@ jobs:
           restore-keys: Library-test-
 
       - name: Activate Unity License
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
         run: |
           unity-editor -logFile /dev/stdout -quit \
             -username "$UNITY_EMAIL" \
@@ -43,12 +44,19 @@ jobs:
 
       - name: Return Unity License
         continue-on-error: true
-        run: unity-editor -quit -returnlicense \
-          -logFile /dev/stdout \
-          -username "$UNITY_EMAIL" \
-          -password "$UNITY_PASSWORD"
-          -projectPath ./UnityProject
+        run: |
+          unity-editor -quit -returnlicense \
+            -logFile unity_log.txt \
+            -username "$UNITY_EMAIL" \
+            -password "$UNITY_PASSWORD" \
+            -projectPath ./UnityProject
 
+      - name: Upload Unity Logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: Unity Logs
+          path: unity_log.txt
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
