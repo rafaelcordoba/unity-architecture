@@ -2,92 +2,57 @@ name: Unit Tests
 on: [push, pull_request]
 
 jobs:
-  testAllModes:
-    name: Test in ${{ matrix.testMode }}
+  build:
+    name: Test my project
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        testMode:
-          - playmode
-          - editmode
-        projectPath:
-          - ./UnityProject
+    container: unityci/editor:6000.0.23f1-linux-il2cpp-3.1.0
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log Unity Serial
+        run: |
+          echo "Unity Serial: ${{ secrets.UNITY_SERIAL }}"
+          
+      - name: Cache Unity Library
+        uses: actions/cache@v3
         with:
-          lfs: true
-      - uses: actions/cache@v4
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-          restore-keys: |
-            Library-            
-      - uses: game-ci/unity-test-runner@v4
-        id: tests
+          path: ./UnityProject/Library
+          key: Library-test-${{ hashFiles('./UnityProject/Assets/**', './UnityProject/Packages/**', './UnityProject/ProjectSettings/**') }}
+          restore-keys: Library-test-
+
+      - name: Activate Unity License
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          testMode: ${{ matrix.testMode }}
-          artifactsPath: ${{ matrix.testMode }}-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: ${{ matrix.testMode }} Test Results
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+bamlab.*'
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Test results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.artifactsPath }}
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Coverage results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.coveragePath }}
-  upload-coverage:
-    needs: testAllModes
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: coverage-results
-      - name: Display structure of downloaded files
-        run: ls -R coverage-results
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: coverage-results
-          name: coverage-pages
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        run: |
+          unity-editor -logFile /dev/stdout -quit \
+            -username "$UNITY_EMAIL" \
+            -password "$UNITY_PASSWORD" \
+            -serial "$UNITY_SERIAL" \
+            -projectPath ./UnityProject
 
-      # - name: Set up Unity license
-      #   env:
-      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-      #   run: |
-      #     unity-editor -batchmode -nographics -quit \
-      #     -username "$UNITY_EMAIL" \
-      #     -password "$UNITY_PASSWORD"
+      - name: Generate Solution
+        run: |
+          unity-editor -nographics \
+            -projectPath ./UnityProject \
+            -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution \
+            -quit
 
-      # - name: Generate Solution
-      #   run: |
-      #     unity-editor -nographics -projectPath ./UnityProject -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution -quit
+      - name: Return Unity License
+        continue-on-error: true
+        run: unity-editor -quit -returnlicense \
+          -logFile /dev/stdout \
+          -username "$UNITY_EMAIL" \
+          -password "$UNITY_PASSWORD"
+          -projectPath ./UnityProject
 
-      # - name: Setup .NET
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: '9.0.x'
-      
-      # - name: Run Tests
-      #   run: dotnet test MyGameTests
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Run Tests
+        run: dotnet test MyGameTests
